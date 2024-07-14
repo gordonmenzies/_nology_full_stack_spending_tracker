@@ -1,13 +1,23 @@
+import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./Containers/Home/Home";
-import Login from "./Containers/Login/Login";
+import Login from "./Containers/Auth/Login/Login";
 import AddSpend from "./Containers/AddSpend/AddSpend";
 import Analytics from "./Containers/Analytics/Analytics";
+import Register from "./Components/Register/Register";
+
 import "./App.css";
 
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth";
+import { getFirestore, collection, query, getDocs } from "firebase/firestore";
+
+type User = {
+  id: string;
+  name: string;
+  password: string;
+  email: string;
+};
 
 const firebaseConfig = {
   apiKey: "AIzaSyBZzJFtpB1asMpp6ZFow-1D52ucP-jsEH4",
@@ -20,32 +30,48 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const db = getFirestore(app);
-
-// import { collection, addDoc } from "firebase/firestore";
-
-// try {
-//   const docRef = await addDoc(collection(db, "users"), {
-//     first: "Ada",
-//     last: "Lovelace",
-//     born: 1815,
-//   });
-//   console.log("Document written with ID: ", docRef.id);
-// } catch (e) {
-//   console.error("Error adding document: ", e);
-// }
+// const firestore = getFirestore(app);
+// const auth = getAuth(app);
 
 const App = () => {
+  const [data, setData] = useState<User[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const standardCollection = collection(firestore, "standard");
+  //       const standardQuery = query(standardCollection);
+  //       const querySnapshot = await getDocs(standardQuery);
+  //       const fetchedData: User[] = [];
+  //       querySnapshot.forEach((doc) => {
+  //         fetchedData.push({ id: doc.id, ...doc.data() } as User);
+  //       });
+  //       setData(fetchedData);
+  //     } catch (error: any) {
+  //       setError("Error fetching data: " + error.message);
+  //       console.error("Error fetching data: ", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
   return (
     <div>
       <Routes>
-        <Route path="/home" element={<Home />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/addspend" element={<AddSpend />}></Route>
-        <Route path="/analytics" element={<Analytics />}></Route>
+        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/addspend" element={<AddSpend />} />
+        <Route path="/analytics" element={<Analytics />} />
       </Routes>
-      <p>hello</p>
+      <Register></Register>
+      {error && <p>{error}</p>}
+      <ul>
+        {data.map((item) => (
+          <li key={item.id}>{JSON.stringify(item)}</li>
+        ))}
+      </ul>
     </div>
   );
 };
