@@ -5,6 +5,7 @@ import Login from "./Containers/Auth/Login/Login";
 import AddSpend from "./Containers/AddSpend/AddSpend";
 import Analytics from "./Containers/Analytics/Analytics";
 import Register from "./Components/Register/Register";
+import SignIn from "./Components/SignIn/SignIn";
 
 import "./App.css";
 
@@ -66,6 +67,7 @@ const App = () => {
         <Route path="/analytics" element={<Analytics />} />
       </Routes>
       <Register></Register>
+      <SignIn></SignIn>
       {error && <p>{error}</p>}
       <ul>
         {data.map((item) => (
