@@ -1,11 +1,17 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { Card, Typography, Input, Checkbox, Button, TextField, FormControlLabel } from "@mui/material";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { GlobalContext } from "../Context/GlobalState";
 
-const SignIn: React.FC = () => {
+type SignInProps = {
+  userId: string;
+};
+
+const SignIn = (SignInProps: SignInProps) => {
   // State variables with types
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const { setUserId } = useContext(GlobalContext);
 
   // Handle form submission
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -19,7 +25,7 @@ const SignIn: React.FC = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        // ...
+        setUserId(user.uid);
       })
       .catch((error) => {
         const errorCode = error.code;

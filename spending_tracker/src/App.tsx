@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { GlobalContext } from "./Components/Context/GlobalState";
 import { Route, Routes } from "react-router-dom";
+
+import config from "./Config/config";
 import Home from "./Containers/Home/Home";
 import Login from "./Containers/Auth/Login/Login";
-import AddSpend from "./Containers/AddSpend/AddSpend";
 import Analytics from "./Containers/Analytics/Analytics";
-import Register from "./Components/Register/Register";
-import SignIn from "./Components/SignIn/SignIn";
+import AddSpend from "./Containers/AddSpend/AddSpend";
 
 import "./App.css";
 
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore, collection, query, getDocs } from "firebase/firestore";
+import { getDatabase, ref, onValue, off } from "firebase/database";
+import "firebase/database";
 
 type User = {
   id: string;
@@ -20,54 +21,55 @@ type User = {
   email: string;
 };
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBZzJFtpB1asMpp6ZFow-1D52ucP-jsEH4",
-  authDomain: "spending-tracker-584a8.firebaseapp.com",
-  projectId: "spending-tracker-584a8",
-  storageBucket: "spending-tracker-584a8.appspot.com",
-  messagingSenderId: "351908282910",
-  appId: "1:351908282910:web:cb9b93634596da6d7de40f",
-  measurementId: "G-5S0XFW511L",
-};
-
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(config.firebase);
+const database = getDatabase(app);
 // const firestore = getFirestore(app);
 // const auth = getAuth(app);
 
 const App = () => {
+  const { userId } = useContext(GlobalContext);
   const [data, setData] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [theUserId, setUserId] = useState<string>(userId);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const standardCollection = collection(firestore, "standard");
-  //       const standardQuery = query(standardCollection);
-  //       const querySnapshot = await getDocs(standardQuery);
-  //       const fetchedData: User[] = [];
-  //       querySnapshot.forEach((doc) => {
-  //         fetchedData.push({ id: doc.id, ...doc.data() } as User);
-  //       });
-  //       setData(fetchedData);
-  //     } catch (error: any) {
-  //       setError("Error fetching data: " + error.message);
-  //       console.error("Error fetching data: ", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchUserData = async (theUserId: string) => {
+      try {
+        const userRef = ref(database, "users/" + theUserId);
+        onValue(userRef, (snapshot) => {
+          const data = snapshot.val();
+          console.log("User data: ", data);
+          if (data) {
+            setData(data);
+          } else {
+            setError("No data found for the specified user ID");
+          }
+        });
 
-  //   fetchData();
-  // }, []);
+        // Clean up the listener
+        return () => {
+          off(userRef);
+        };
+      } catch (error) {
+        console.error("Error fetching user data: ", error);
+        setError("Error fetching user data");
+      }
+    };
+
+    if (theUserId) {
+      fetchUserData(theUserId);
+    }
+  }, [theUserId]);
 
   return (
     <div>
       <Routes>
         <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login userId={theUserId} />} />
         <Route path="/addspend" element={<AddSpend />} />
         <Route path="/analytics" element={<Analytics />} />
       </Routes>
-      <Register></Register>
-      <SignIn></SignIn>
+
       {error && <p>{error}</p>}
       <ul>
         {data.map((item) => (
