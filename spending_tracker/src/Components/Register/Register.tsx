@@ -1,6 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Card, Typography, Input, Checkbox, Button, TextField, FormControlLabel } from "@mui/material";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useAuth } from "../Context/AuthenticationState";
+import { doCreateUSerWithEmailAndPassword } from "../Context/auth";
 
 const Register: React.FC = () => {
   // State variables with types
@@ -8,9 +10,14 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [agreed, setAgreed] = useState<boolean>(false);
+  const [confirmPassword, setconfirmPassword] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const { userLoggedIn } = useAuth();
 
   // Handle form submission
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Log the inputted values (you can also handle form submission here)
     console.log("Name:", name);
@@ -18,18 +25,21 @@ const Register: React.FC = () => {
     console.log("Password:", password);
     console.log("Agreed to terms:", agreed);
 
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+    if (!isRegistering) {
+      try {
+        setIsRegistering(true);
+        const newUser = await doCreateUSerWithEmailAndPassword(email, password);
+        const user = newUser.user;
+        console.log(user);
+      } catch (error) {
+        const errorCode = (error as any).code;
+        const errorMessage = (error as any).message;
+        // Handle the error as needed
+      }
+      console.log("user created");
+    } else {
+      console.log("user not able to be created");
+    }
   };
 
   // Handle input change

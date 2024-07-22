@@ -1,7 +1,15 @@
 import "./Home.scss";
 
-const Home = () => {
-  return <p>Home</p>;
+type HomeProps = {
+  userId: string;
+};
+
+const Home = (HomeProps: HomeProps) => {
+  return (
+    <div>
+      <p>Home</p>;<p>user id : {HomeProps.userId}</p>;
+    </div>
+  );
 };
 
 // add a payment

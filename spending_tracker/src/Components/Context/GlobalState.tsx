@@ -40,7 +40,7 @@ interface GlobalContextProps extends State {
   setUserId: (id: string) => void;
 }
 
-export const GlobalContext = createContext<GlobalContextProps>({
+const GlobalContext = createContext<GlobalContextProps>({
   transactions: [],
   deleteTransaction: () => {},
   addTransaction: () => {},
@@ -53,7 +53,7 @@ interface GlobalProviderProps {
   children: ReactNode;
 }
 
-export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
+const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer<React.Reducer<State, Action>>(AppReducer, initialState);
   const [userId, setUserId] = useState<string>("");
 
@@ -86,3 +86,5 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     </GlobalContext.Provider>
   );
 };
+
+export { GlobalContext, GlobalProvider };

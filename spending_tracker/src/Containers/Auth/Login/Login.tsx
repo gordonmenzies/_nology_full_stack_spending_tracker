@@ -1,6 +1,8 @@
 import "./Login.scss";
 import Register from "../../../Components/Register/Register";
 import SignIn from "../../../Components/SignIn/SignIn";
+import { GlobalProvider } from "../../../Components/Context/GlobalState";
+import { AuthProvider } from "../../../Components/Context/AuthenticationState";
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -34,8 +36,10 @@ const app = initializeApp(firebaseConfig);
 const Login = (LogInProps: LogInProps) => {
   return (
     <div>
-      <Register></Register>
-      <SignIn userId={LogInProps.userId}></SignIn>
+      <AuthProvider>
+        <Register></Register>
+        <SignIn></SignIn>
+      </AuthProvider>
     </div>
   );
 };

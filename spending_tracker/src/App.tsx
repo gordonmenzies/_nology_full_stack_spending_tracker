@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { GlobalContext } from "./Components/Context/GlobalState";
 import { Route, Routes } from "react-router-dom";
 
-import config from "./Config/config";
+import { config } from "./Config/config";
 import Home from "./Containers/Home/Home";
 import Login from "./Containers/Auth/Login/Login";
 import Analytics from "./Containers/Analytics/Analytics";
@@ -64,7 +64,7 @@ const App = () => {
   return (
     <div>
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<Home userId={theUserId} />} />
         <Route path="/login" element={<Login userId={theUserId} />} />
         <Route path="/addspend" element={<AddSpend />} />
         <Route path="/analytics" element={<Analytics />} />

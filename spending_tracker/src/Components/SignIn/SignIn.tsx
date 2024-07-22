@@ -2,36 +2,56 @@ import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { Card, Typography, Input, Checkbox, Button, TextField, FormControlLabel } from "@mui/material";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { GlobalContext } from "../Context/GlobalState";
+import { useAuth } from "../Context/AuthenticationState";
+import { doSignInWithEmailAndPassword } from "../Context/auth";
 
-type SignInProps = {
-  userId: string;
-};
+const SignIn = () => {
+  const { userLoggedIn, currentUser, setCurrentUser } = useAuth();
 
-const SignIn = (SignInProps: SignInProps) => {
   // State variables with types
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { setUserId } = useContext(GlobalContext);
+  const [isSigningin, setIsSigningIn] = useState(false);
 
   // Handle form submission
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Log the inputted values (you can also handle form submission here)
     console.log("Email:", email);
     console.log("Password:", password);
 
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
+    if (!isSigningin) {
+      try {
+        setIsSigningIn(true);
+        const userCredential = await doSignInWithEmailAndPassword(email, password);
         const user = userCredential.user;
-        setUserId(user.uid);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
+        console.log(user);
+        setCurrentUser(user);
+      } catch (error) {
+        const errorCode = (error as any).code;
+        const errorMessage = (error as any).message;
+        // Handle the error as needed
+      }
+      console.log("user signed in");
+      console.log(currentUser);
+    } else {
+      console.log("user already signed in");
+    }
   };
+
+  //   const auth = getAuth();
+  //   signInWithEmailAndPassword(auth, email, password)
+  //     .then((userCredential) => {
+  //       // Signed in
+  //       const user = userCredential.user;
+  //       setUserId(user.uid);
+  //     })
+  //     .catch((error) => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //     });
+  //   console.log(userId);
+  // };
 
   // Handle input change
   const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: ChangeEvent<HTMLInputElement>) => {
