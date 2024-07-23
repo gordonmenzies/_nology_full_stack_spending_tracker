@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { GlobalContext } from "./Components/Context/GlobalState";
+import { AuthProvider } from "./Components/Context/AuthenticationState";
+import { useAuth } from "./Components/Context/AuthenticationState";
 import { Route, Routes } from "react-router-dom";
 
 import { config } from "./Config/config";
@@ -27,48 +29,19 @@ const database = getDatabase(app);
 // const auth = getAuth(app);
 
 const App = () => {
-  const { userId } = useContext(GlobalContext);
   const [data, setData] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [theUserId, setUserId] = useState<string>(userId);
-
-  useEffect(() => {
-    const fetchUserData = async (theUserId: string) => {
-      try {
-        const userRef = ref(database, "users/" + theUserId);
-        onValue(userRef, (snapshot) => {
-          const data = snapshot.val();
-          console.log("User data: ", data);
-          if (data) {
-            setData(data);
-          } else {
-            setError("No data found for the specified user ID");
-          }
-        });
-
-        // Clean up the listener
-        return () => {
-          off(userRef);
-        };
-      } catch (error) {
-        console.error("Error fetching user data: ", error);
-        setError("Error fetching user data");
-      }
-    };
-
-    if (theUserId) {
-      fetchUserData(theUserId);
-    }
-  }, [theUserId]);
 
   return (
     <div>
-      <Routes>
-        <Route path="/home" element={<Home userId={theUserId} />} />
-        <Route path="/login" element={<Login userId={theUserId} />} />
-        <Route path="/addspend" element={<AddSpend />} />
-        <Route path="/analytics" element={<Analytics />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/addspend" element={<AddSpend />} />
+          <Route path="/analytics" element={<Analytics />} />
+        </Routes>
+      </AuthProvider>
 
       {error && <p>{error}</p>}
       <ul>

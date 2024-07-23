@@ -2,7 +2,8 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Card, Typography, Input, Checkbox, Button, TextField, FormControlLabel } from "@mui/material";
 // import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useAuth } from "../Context/AuthenticationState";
-import { doCreateUSerWithEmailAndPassword } from "../Context/auth";
+import { doCreateUSerWithEmailAndPassword, createUserData } from "../Context/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 const Register: React.FC = () => {
   // State variables with types
@@ -30,6 +31,7 @@ const Register: React.FC = () => {
         setIsRegistering(true);
         const newUser = await doCreateUSerWithEmailAndPassword(email, password);
         const user = newUser.user;
+        await createUserData(email, password, user.uid);
         console.log(user);
       } catch (error) {
         const errorCode = (error as any).code;

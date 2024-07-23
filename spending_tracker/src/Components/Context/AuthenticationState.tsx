@@ -1,12 +1,21 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from "react";
-import { auth } from "../../Config/config";
+import { auth, db, doc, getDoc, setDoc } from "../../Config/config";
 import { onAuthStateChanged, User } from "firebase/auth";
+import { User as FirebaseUser } from "firebase/auth";
 
 interface AuthContextProps {
   currentUser: User | null;
   userLoggedIn: boolean;
   loading: boolean;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
+  signOut: () => Promise<void>;
+}
+
+interface UserProfile {
+  uid: string;
+  email: string;
+  displayName: string;
+  additionalInfo?: string;
 }
 
 const AuthContext = createContext<AuthContextProps>({
@@ -14,7 +23,16 @@ const AuthContext = createContext<AuthContextProps>({
   userLoggedIn: false,
   loading: true,
   setCurrentUser: () => null,
+  signOut: async () => {},
 });
+
+// export const getUserProfile = async (uid: string): Promise<UserProfile | undefined> => {
+//   const userRef = doc(db, `users/${uid}`);
+//   const snapshot = await getDoc(userRef);
+//   if (snapshot.exists()) {
+//     return snapshot.data() as UserProfile;
+//   }
+// };
 
 export const useAuth = () => {
   return useContext(AuthContext);
@@ -23,6 +41,10 @@ export const useAuth = () => {
 interface AuthProviderProps {
   children: ReactNode;
 }
+
+const signOut = async () => {
+  await auth.signOut();
+};
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -50,6 +72,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     userLoggedIn,
     loading,
     setCurrentUser,
+    signOut,
   };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;

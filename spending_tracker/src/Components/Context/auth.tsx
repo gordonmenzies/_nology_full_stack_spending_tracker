@@ -1,9 +1,27 @@
-import { auth } from "../../Config/config";
+import { auth, app } from "../../Config/config";
+import { doc, setDoc, collection, addDoc, getFirestore } from "firebase/firestore";
+import { getDatabase, ref, set } from "firebase/database";
 
 import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, sendEmailVerification } from "firebase/auth";
 
+export const createUserData = async (email: string, password: string, userId: string) => {
+  const db = getFirestore(app);
+  try {
+    const data = {
+      email: email,
+      password: password,
+      userId: userId,
+    };
+    await setDoc(doc(db, "users", userId), data);
+  } catch (error) {
+    console.log("something went wrong - " + error);
+  }
+};
+
 export const doCreateUSerWithEmailAndPassword = async (email: string, password: string) => {
-  return createUserWithEmailAndPassword(auth, email, password);
+  // Create the user with email and password
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  return userCredential;
 };
 
 export const doSignInWithEmailAndPassword = (email: string, password: string) => {
