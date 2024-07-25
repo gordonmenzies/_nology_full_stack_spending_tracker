@@ -5,11 +5,21 @@ import { doSignOut, createUserData } from "../../Components/Context/auth";
 import { app } from "../../Config/config";
 import { useAuth } from "../../Components/Context/AuthenticationState";
 
+import { AddTransaction } from "../../Components/Transactions/AddTransaction";
+
+interface Transaction {
+  id: number;
+  text: string;
+  category: string;
+  amount: number;
+}
+
 type User = {
   id: string;
   name: string;
   password: string;
   email: string;
+  transactions: Transaction[];
 };
 
 const Home = () => {
@@ -52,8 +62,12 @@ const Home = () => {
 
   return (
     <div>
-      <p>Home</p>;<p>user id : {userId}</p>;{/* <p>hello nice to see you again {name}</p> */}
-      <button onClick={() => doSignOut()}></button>
+      <p>Home</p>
+      <p>user id : {userId}</p>
+      {/* <p>hello nice to see you again {name}</p> */}
+      <AddTransaction></AddTransaction>
+      <button>Settings</button>
+      <button onClick={() => doSignOut()}>Sign Out</button>
       <button onClick={() => createUserData("bram", "stoker", userId)}>add data</button>
       {/* <p>{budget}</p>
       <SimpleTransactionBlock></SimpleTransactionBlock>

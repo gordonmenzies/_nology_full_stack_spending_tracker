@@ -12,7 +12,7 @@ interface State {
 }
 
 // Define action types
-type Action = { type: "DELETE_TRANSACTION"; payload: number } | { type: "ADD_TRANSACTION"; payload: Transaction };
+type Action = { type: "DELETE_TRANSACTION"; payload: number } | { type: "ADD_TRANSACTION"; payload: Transaction } | { type: "READ_TRANSACTIONS"; payload: Transaction[] };
 
 // The reducer function
 const reducer = (state: State, action: Action): State => {
@@ -23,9 +23,15 @@ const reducer = (state: State, action: Action): State => {
         transactions: state.transactions.filter((transaction) => transaction.id !== action.payload),
       };
     case "ADD_TRANSACTION":
-      return {
+      const newState = {
         ...state,
         transactions: [action.payload, ...state.transactions],
+      };
+      return newState;
+    case "READ_TRANSACTIONS":
+      return {
+        ...state,
+        transactions: action.payload,
       };
     default:
       return state;

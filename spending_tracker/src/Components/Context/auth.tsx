@@ -1,6 +1,5 @@
 import { auth, app } from "../../Config/config";
-import { doc, setDoc, collection, addDoc, getFirestore } from "firebase/firestore";
-import { getDatabase, ref, set } from "firebase/database";
+import { doc, setDoc, getFirestore } from "firebase/firestore";
 
 import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, sendEmailVerification } from "firebase/auth";
 
@@ -11,6 +10,7 @@ export const createUserData = async (email: string, password: string, userId: st
       email: email,
       password: password,
       userId: userId,
+      transactions: [],
     };
     await setDoc(doc(db, "users", userId), data);
   } catch (error) {
