@@ -1,7 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
-import { GlobalContext } from "./Components/Context/GlobalState";
+import { useState } from "react";
 import { AuthProvider } from "./Components/Context/AuthenticationState";
-import { useAuth } from "./Components/Context/AuthenticationState";
 import { Route, Routes } from "react-router-dom";
 
 import { config } from "./Config/config";
@@ -13,7 +11,6 @@ import AddSpend from "./Containers/AddSpend/AddSpend";
 import "./App.css";
 
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue, off } from "firebase/database";
 import "firebase/database";
 
 type User = {
@@ -24,9 +21,6 @@ type User = {
 };
 
 const app = initializeApp(config.firebase);
-const database = getDatabase(app);
-// const firestore = getFirestore(app);
-// const auth = getAuth(app);
 
 const App = () => {
   const [data, setData] = useState<User[]>([]);

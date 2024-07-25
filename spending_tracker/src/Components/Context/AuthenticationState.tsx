@@ -26,14 +26,6 @@ const AuthContext = createContext<AuthContextProps>({
   signOut: async () => {},
 });
 
-// export const getUserProfile = async (uid: string): Promise<UserProfile | undefined> => {
-//   const userRef = doc(db, `users/${uid}`);
-//   const snapshot = await getDoc(userRef);
-//   if (snapshot.exists()) {
-//     return snapshot.data() as UserProfile;
-//   }
-// };
-
 export const useAuth = () => {
   return useContext(AuthContext);
 };
