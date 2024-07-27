@@ -9,7 +9,7 @@ interface Transaction {
   amount: number;
 }
 
-export const AddTransaction: React.FC = () => {
+export const AddTransactionLite: React.FC = () => {
   const [text, setText] = useState<string>("");
   const [catgeoryText, setCategoryText] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
@@ -30,23 +30,15 @@ export const AddTransaction: React.FC = () => {
   };
 
   return (
-    <div className="addSpend">
+    <div className="container-lite">
       <form onSubmit={onSubmit}>
-        <div className="form-control">
-          <label htmlFor="text">Text</label>
-          <input type="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="Enter text..." />
+        <div className="form-control-lite">
+          <input className="input-lite" type="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="Item" />
+          <input className="input-lite" type="category" value={catgeoryText} onChange={(e) => setCategoryText(e.target.value)} placeholder="Category" />
+          <label htmlFor="amount"></label>
+          <input className="input-lite" type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} placeholder="Enter amount..." />
         </div>
-        <div className="form-control">
-          <label htmlFor="category">Category</label>
-          <input type="category" value={catgeoryText} onChange={(e) => setCategoryText(e.target.value)} placeholder="Enter text..." />
-        </div>
-        <div className="form-control">
-          <label htmlFor="amount">
-            Amount <br />
-          </label>
-          <input type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} placeholder="Enter amount..." />
-        </div>
-        <button className="btn">Add</button>
+        <button className="btn">Add transaction</button>
       </form>
     </div>
   );

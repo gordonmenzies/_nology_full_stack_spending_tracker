@@ -8,9 +8,8 @@ export const Balance: React.FC = () => {
   const total: string = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
 
   return (
-    <>
-      <h4>Your Balance</h4>
+    <div className="balance">
       <h1>${total}</h1>
-    </>
+    </div>
   );
 };

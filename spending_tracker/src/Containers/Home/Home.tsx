@@ -1,11 +1,13 @@
 import "./Home.scss";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getDatabase, ref, onValue, off } from "firebase/database";
-import { doSignOut, createUserData } from "../../Components/Context/auth";
+import { doSignOut } from "../../Components/Context/auth";
 import { app } from "../../Config/config";
 import { useAuth } from "../../Components/Context/AuthenticationState";
+import { Menu } from "../../Components/Menu/Menu";
 
-import { AddTransaction } from "../../Components/Transactions/AddTransaction";
+import { AddTransactionLite } from "../../Components/Transactions/AddTransactionLite";
 
 interface Transaction {
   id: number;
@@ -29,6 +31,8 @@ const Home = () => {
   const userId = currentUser ? currentUser.uid : "";
 
   const database = getDatabase(app);
+
+  const signOut = () => {};
 
   useEffect(() => {
     const fetchUserData = async (userId: string) => {
@@ -61,14 +65,19 @@ const Home = () => {
   }, [userId]);
 
   return (
-    <div>
-      <p>Home</p>
-      <p>user id : {userId}</p>
-      {/* <p>hello nice to see you again {name}</p> */}
-      <AddTransaction></AddTransaction>
-      <button>Settings</button>
-      <button onClick={() => doSignOut()}>Sign Out</button>
-      <button onClick={() => createUserData("bram", "stoker", userId)}>add data</button>
+    <div className="container">
+      <Menu></Menu>
+      <p>hello nice to see you again {currentUser?.email}</p>
+      <AddTransactionLite></AddTransactionLite>
+      <div className="buttons">
+        <Link to={"/addspend"} replace={true}>
+          <button>See Transactions</button>
+        </Link>
+        <Link to={"/analytics"} replace={true}>
+          <button>Analytics</button>
+        </Link>
+        <button onClick={() => doSignOut()}>Sign Out</button>
+      </div>
       {/* <p>{budget}</p>
       <SimpleTransactionBlock></SimpleTransactionBlock>
       <Statistic></Statistic> */}

@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Navigate } from "react-router-dom";
 import { Card, Typography, Button, TextField } from "@mui/material";
-import { useAuth, createUserProfile } from "../Context/AuthenticationState";
+import { useAuth } from "../Context/AuthenticationState";
 import { doSignInWithEmailAndPassword } from "../Context/auth";
 
 const SignIn = () => {
