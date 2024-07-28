@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Transaction } from "./Transaction";
+import { useAuth } from "../Context/AuthenticationState";
 import { GlobalContext } from "../Context/GlobalState";
 
 // Define the structure of a transaction
@@ -12,6 +13,8 @@ interface Transaction {
 
 export const TransactionList: React.FC = () => {
   const { transactions } = useContext(GlobalContext) as { transactions: Transaction[] };
+
+  console.log(transactions);
 
   return (
     <>

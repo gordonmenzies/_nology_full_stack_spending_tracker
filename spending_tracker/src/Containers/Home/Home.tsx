@@ -1,4 +1,5 @@
 import "./Home.scss";
+import IncomeBreakdown from "../../Components/Charts/IncomeBreakdown";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getDatabase, ref, onValue, off } from "firebase/database";
@@ -69,6 +70,9 @@ const Home = () => {
       <Menu></Menu>
       <p>hello nice to see you again {currentUser?.email}</p>
       <AddTransactionLite></AddTransactionLite>
+      <div>
+        <IncomeBreakdown />
+      </div>
       <div className="buttons">
         <Link to={"/addspend"} replace={true}>
           <button>See Transactions</button>

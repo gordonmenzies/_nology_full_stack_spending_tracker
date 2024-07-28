@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AuthProvider } from "./Components/Context/AuthenticationState";
 import { Route, Routes } from "react-router-dom";
-
+import { GlobalProvider } from "./Components/Context/GlobalState";
 import Home from "./Containers/Home/Home";
 import Login from "./Containers/Auth/Login/Login";
 import Analytics from "./Containers/Analytics/Analytics";
@@ -25,12 +25,14 @@ const App = () => {
   return (
     <div>
       <AuthProvider>
-        <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="" element={<Login />} />
-          <Route path="/addspend" element={<AddSpend />} />
-          <Route path="/analytics" element={<Analytics />} />
-        </Routes>
+        <GlobalProvider>
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="" element={<Login />} />
+            <Route path="/addspend" element={<AddSpend />} />
+            <Route path="/analytics" element={<Analytics />} />
+          </Routes>
+        </GlobalProvider>
       </AuthProvider>
 
       {error && <p>{error}</p>}
