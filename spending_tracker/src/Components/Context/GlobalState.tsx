@@ -105,11 +105,11 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   }
 
   async function readTransaction() {
-    const user = await readDataFromFirebase(userId);
-    if (user) {
+    const data = await readDataFromFirebase(userId);
+    if (data) {
       dispatch({
         type: "READ_TRANSACTIONS",
-        payload: user,
+        payload: data?.transactions,
       });
     }
   }
@@ -128,7 +128,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     }
   };
 
-  const readDataFromFirebase = async (userId: string): Promise<Transaction[] | undefined> => {
+  const readDataFromFirebase = async (userId: string): Promise<User | undefined> => {
     if (userId !== "") {
       const documentRef = doc(db, "users", userId);
 
@@ -138,7 +138,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
           const data = docSnap.data() as User;
           console.log("Data read from Firebase:", data);
           setUser(data);
-          return data.transactions;
+          return data;
         } else {
           console.log("No such document!");
           return undefined;
@@ -158,12 +158,12 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     const initializeData = async () => {
       if (userId) {
         console.log("userid", userId);
-        const transactions = await readDataFromFirebase(userId);
+        const data = await readDataFromFirebase(userId);
         console.log("transactions read");
-        if (transactions) {
+        if (data) {
           dispatch({
             type: "READ_TRANSACTIONS",
-            payload: transactions,
+            payload: data.transactions,
           });
         }
       }
