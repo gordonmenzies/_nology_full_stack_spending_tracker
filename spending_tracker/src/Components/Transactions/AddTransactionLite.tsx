@@ -38,7 +38,7 @@ export const AddTransactionLite: React.FC = () => {
           <label htmlFor="amount"></label>
           <input className="input-lite" type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} placeholder="Enter amount..." />
         </div>
-        <button className="btn">Add transaction</button>
+        <button className="btn">Add Transaction</button>
       </form>
     </div>
   );

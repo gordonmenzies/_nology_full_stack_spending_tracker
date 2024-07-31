@@ -2,7 +2,6 @@ import React, { createContext, useReducer, ReactNode, useState, useEffect } from
 import { doc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
 import { db } from "../../Config/config";
 import AppReducer from "./AppReducer";
-import { getAuth } from "firebase/auth";
 
 // Define the structure of a transaction
 interface Transaction {
@@ -49,6 +48,15 @@ const initialState: State = {
   transactions: [],
 };
 
+const emptyUser: User = {
+  id: "",
+  firstName: "",
+  secondName: "",
+  password: "",
+  email: "",
+  transactions: initialState.transactions,
+};
+
 // Create context
 interface GlobalContextProps extends State {
   deleteTransaction: (id: number) => void;
@@ -56,6 +64,7 @@ interface GlobalContextProps extends State {
   userId: string;
   setUserId: (id: string) => void;
   readTransaction: () => void;
+  user: User;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
@@ -65,6 +74,7 @@ const GlobalContext = createContext<GlobalContextProps>({
   userId: "",
   setUserId: () => {},
   readTransaction: () => {},
+  user: emptyUser,
 });
 
 // Provider component
@@ -75,6 +85,7 @@ interface GlobalProviderProps {
 const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer<React.Reducer<State, Action>>(AppReducer, initialState);
   const [userId, setUserId] = useState<string>("");
+  const [user, setUser] = useState<User>(emptyUser);
 
   // Actions
   function deleteTransaction(id: number) {
@@ -126,6 +137,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
         if (docSnap.exists()) {
           const data = docSnap.data() as User;
           console.log("Data read from Firebase:", data);
+          setUser(data);
           return data.transactions;
         } else {
           console.log("No such document!");
@@ -144,11 +156,9 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   useEffect(() => {
     console.log("occurred");
     const initializeData = async () => {
-      const { currentUser } = getAuth();
-      if (currentUser) {
-        console.log(currentUser);
-        setUserId(currentUser.uid);
-        const transactions = await readDataFromFirebase(currentUser.uid);
+      if (userId) {
+        console.log("userid", userId);
+        const transactions = await readDataFromFirebase(userId);
         console.log("transactions read");
         if (transactions) {
           dispatch({
@@ -162,7 +172,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     initializeData();
     console.log(userId);
     console.log(state.transactions);
-  }, []);
+  }, [userId]);
 
   return (
     <GlobalContext.Provider
@@ -173,6 +183,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
         userId,
         setUserId,
         readTransaction,
+        user,
       }}
     >
       {children}

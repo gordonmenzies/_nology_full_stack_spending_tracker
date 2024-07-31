@@ -1,11 +1,13 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { Card, Typography, Button, TextField } from "@mui/material";
+import { GlobalContext } from "../Context/GlobalState";
 import { useAuth } from "../Context/AuthenticationState";
 import { doSignInWithEmailAndPassword } from "../Context/auth";
 
 const SignIn = () => {
-  const { userLoggedIn, currentUser, setCurrentUser } = useAuth();
+  const { userLoggedIn } = useAuth();
+  const { setUserId } = useContext(GlobalContext);
 
   // State variables with types
   const [email, setEmail] = useState<string>("");
@@ -24,16 +26,14 @@ const SignIn = () => {
         setIsSigningIn(true);
         const userCredential = await doSignInWithEmailAndPassword(email, password);
         const user = userCredential.user;
+        setUserId(user.uid);
         console.log(user);
-        console.log(userLoggedIn);
-        setCurrentUser(user);
       } catch (error) {
         const errorCode = (error as any).code;
         const errorMessage = (error as any).message;
         // Handle the error as needed
       }
       console.log("user signed in");
-      console.log(currentUser);
     } else {
       console.log("user already signed in");
     }

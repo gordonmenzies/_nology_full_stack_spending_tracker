@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from "react";
-import { auth, db, doc, getDoc, setDoc } from "../../Config/config";
+import { auth } from "../../Config/config";
 import { onAuthStateChanged, User } from "firebase/auth";
 
 interface AuthContextProps {
@@ -7,6 +7,7 @@ interface AuthContextProps {
   userLoggedIn: boolean;
   loading: boolean;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
+  setUserLoggedIn: (thing: boolean) => void;
   signOut: () => Promise<void>;
 }
 
@@ -17,26 +18,11 @@ interface Transaction {
   amount: number;
 }
 
-interface UserProfile {
-  uid: string;
-  email: string;
-  name: string;
-  additionalInfo?: string;
-}
-
-// type UserType = {
-//   id: string;
-//   firstName: string;
-//   secondName: string;
-//   password: string;
-//   email: string;
-//   transactions: Transaction[];
-// };
-
 const AuthContext = createContext<AuthContextProps>({
   currentUser: null,
   userLoggedIn: false,
   loading: true,
+  setUserLoggedIn: (thing: boolean) => {},
   setCurrentUser: () => null,
   signOut: async () => {},
 });
@@ -78,6 +64,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     currentUser,
     userLoggedIn,
     loading,
+    setUserLoggedIn,
     setCurrentUser,
     signOut,
   };
