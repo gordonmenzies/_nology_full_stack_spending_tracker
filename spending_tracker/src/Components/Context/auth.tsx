@@ -13,6 +13,7 @@ export const createUserData = async (email: string, password: string, userId: st
       password: password,
       userId: userId,
       transactions: [],
+      categoryList: [],
     };
     await setDoc(doc(db, "users", userId), data);
   } catch (error) {

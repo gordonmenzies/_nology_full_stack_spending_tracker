@@ -10,13 +10,6 @@ interface AuthContextProps {
   setUserLoggedIn: (thing: boolean) => void;
 }
 
-interface Transaction {
-  id: number;
-  text: string;
-  category: string;
-  amount: number;
-}
-
 const AuthContext = createContext<AuthContextProps>({
   currentUser: null,
   userLoggedIn: false,

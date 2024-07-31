@@ -16,7 +16,7 @@ const Register: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Log the inputted values (you can also handle form submission here)
-    console.log("Name:", name);
+    console.log("Name:", firstName + secondName);
     console.log("Email:", email);
     console.log("Password:", password);
 

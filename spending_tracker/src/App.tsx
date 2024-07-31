@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { GlobalProvider } from "./Components/Context/GlobalState";
 import Home from "./Containers/Home/Home";
 import Login from "./Containers/Auth/Login/Login";
-import Analytics from "./Containers/Analytics/Analytics";
+import Settings from "./Containers/Settings/Settings";
 import AddSpend from "./Containers/AddSpend/AddSpend";
 
 import "./App.css";
@@ -30,7 +30,7 @@ const App = () => {
             <Route path="/home" element={<Home />} />
             <Route path="" element={<Login />} />
             <Route path="/addspend" element={<AddSpend />} />
-            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/Settings" element={<Settings />} />
           </Routes>
         </GlobalProvider>
       </AuthProvider>

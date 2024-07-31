@@ -1,0 +1,20 @@
+.container {
+  background-color: black;
+  width: 310px;
+  border-radius: 10px;
+}
+
+.buttons {
+  flex-direction: row;
+  display: flex;
+  justify-items: center;
+
+  button {
+    width: auto;
+  }
+}
+
+button {
+  width: 40%;
+  margin-top: 10px;
+}

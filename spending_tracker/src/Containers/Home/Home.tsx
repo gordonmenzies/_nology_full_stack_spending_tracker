@@ -1,28 +1,12 @@
 import "./Home.scss";
 import IncomeBreakdown from "../../Components/Charts/IncomeBreakdown";
 import { Link } from "react-router-dom";
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import { doSignOut } from "../../Components/Context/auth";
 import { GlobalContext } from "../../Components/Context/GlobalState";
 import { Menu } from "../../Components/Menu/Menu";
 
 import { AddTransactionLite } from "../../Components/Transactions/AddTransactionLite";
-
-interface Transaction {
-  id: number;
-  text: string;
-  category: string;
-  amount: number;
-}
-
-type User = {
-  id: string;
-  firstName: string;
-  secondName: string;
-  password: string;
-  email: string;
-  transactions: Transaction[];
-};
 
 const Home = () => {
   const { user } = useContext(GlobalContext);
@@ -36,8 +20,8 @@ const Home = () => {
         <IncomeBreakdown />
       </div>
       <div className="buttons">
-        <Link to={"/analytics"} replace={true}>
-          <button>Analytics</button>
+        <Link to={"/Settings"} replace={true}>
+          <button>Settings</button>
         </Link>
         <Link to={"/"} replace={true}>
           <button onClick={() => doSignOut()}>Sign Out</button>
@@ -47,14 +31,13 @@ const Home = () => {
   );
 };
 
+export default Home;
+
 // add a payment
 // analytics
 // settings
 // monthly spend graph
 // in budget out of budget
-
-export default Home;
-
 // const [data, setData] = useState<User>();
 // const [error, setError] = useState<string | null>(null);
 // const userId = user ? user.id : "";

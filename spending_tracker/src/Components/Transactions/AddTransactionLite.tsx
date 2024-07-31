@@ -1,14 +1,7 @@
 import "./transactions.scss";
 import React, { useState, useContext, FormEvent } from "react";
 import { GlobalContext } from "../Context/GlobalState";
-
-interface Transaction {
-  id: number;
-  text: string;
-  category: string;
-  amount: number;
-  date: Date;
-}
+import Transaction from "../../Types/Transaction";
 
 export const AddTransactionLite: React.FC = () => {
   const { user } = useContext(GlobalContext);

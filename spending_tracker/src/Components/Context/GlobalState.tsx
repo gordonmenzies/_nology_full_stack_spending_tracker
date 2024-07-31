@@ -17,6 +17,7 @@ type User = {
 // Define the initial state structure
 interface State {
   transactions: Transaction[];
+  categoryList: string[];
 }
 
 // Define the actions
@@ -35,11 +36,17 @@ interface ReadTransactionAction {
   payload: Transaction[];
 }
 
-type Action = DeleteTransactionAction | AddTransactionAction | ReadTransactionAction;
+interface updateCategory {
+  type: "UPDATE_CATEGORY";
+  payload: string;
+}
+
+type Action = DeleteTransactionAction | AddTransactionAction | ReadTransactionAction | updateCategory;
 
 // Initial state
 const initialState: State = {
   transactions: [],
+  categoryList: ["food", "income", "entertainment", "utilties", "car", "house", "work", "subscription"],
 };
 
 const emptyUser: User = {
@@ -49,13 +56,15 @@ const emptyUser: User = {
   password: "",
   email: "",
   transactions: initialState.transactions,
-  categoryList: ["food", "entertainment", "utilties", "car", "house", "work", "subscription"],
+  categoryList: ["food", "income", "entertainment", "utilties", "car", "house", "work", "subscription"],
 };
 
 // Create context
 interface GlobalContextProps extends State {
+  categoryList: string[];
   deleteTransaction: (id: number) => void;
   addTransaction: (transaction: Transaction) => void;
+  updateCategory: (category: string) => void;
   userId: string;
   setUserId: (id: string) => void;
   readTransaction: () => void;
@@ -64,8 +73,10 @@ interface GlobalContextProps extends State {
 
 const GlobalContext = createContext<GlobalContextProps>({
   transactions: [],
+  categoryList: ["food", "income", "entertainment", "utilties", "car", "house", "work", "subscription"],
   deleteTransaction: () => {},
   addTransaction: () => {},
+  updateCategory: () => {},
   userId: "",
   setUserId: () => {},
   readTransaction: () => {},
@@ -107,6 +118,13 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
         payload: data?.transactions,
       });
     }
+  }
+
+  function updateCategory(category: string) {
+    dispatch({
+      type: "UPDATE_CATEGORY",
+      payload: category,
+    });
   }
 
   const addDataToFirebase = async (transaction: Transaction) => {
@@ -173,8 +191,10 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     <GlobalContext.Provider
       value={{
         transactions: state.transactions,
+        categoryList: state.categoryList,
         deleteTransaction,
         addTransaction,
+        updateCategory,
         userId,
         setUserId,
         readTransaction,

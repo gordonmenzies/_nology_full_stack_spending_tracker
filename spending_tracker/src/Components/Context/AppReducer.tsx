@@ -4,10 +4,11 @@ import Transaction from "../../Types/Transaction";
 // Define the state structure
 interface State {
   transactions: Transaction[];
+  categoryList: string[];
 }
 
 // Define action types
-type Action = { type: "DELETE_TRANSACTION"; payload: number } | { type: "ADD_TRANSACTION"; payload: Transaction } | { type: "READ_TRANSACTIONS"; payload: Transaction[] };
+type Action = { type: "DELETE_TRANSACTION"; payload: number } | { type: "ADD_TRANSACTION"; payload: Transaction } | { type: "READ_TRANSACTIONS"; payload: Transaction[] } | { type: "UPDATE_CATEGORY"; payload: string };
 
 // const updateCategoryList = (newCategory: string) => {
 //   let categories =
@@ -33,6 +34,12 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         transactions: action.payload,
+      };
+    case "UPDATE_CATEGORY":
+      state.categoryList.push(action.payload);
+      return {
+        ...state,
+        categoryList: state.categoryList,
       };
     default:
       return state;
