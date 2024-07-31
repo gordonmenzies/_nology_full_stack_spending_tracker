@@ -2,14 +2,7 @@ import React, { createContext, useReducer, ReactNode, useState, useEffect } from
 import { doc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
 import { db } from "../../Config/config";
 import AppReducer from "./AppReducer";
-
-// Define the structure of a transaction
-interface Transaction {
-  id: number;
-  text: string;
-  category: string;
-  amount: number;
-}
+import Transaction from "../../Types/Transaction";
 
 type User = {
   id: string;

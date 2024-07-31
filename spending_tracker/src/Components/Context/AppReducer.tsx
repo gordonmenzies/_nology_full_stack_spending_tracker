@@ -1,10 +1,5 @@
+import Transaction from "../../Types/Transaction";
 // Define the structure of a transaction
-interface Transaction {
-  id: number;
-  text: string;
-  category: string;
-  amount: number;
-}
 
 // Define the state structure
 interface State {

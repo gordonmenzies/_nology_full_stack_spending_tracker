@@ -7,6 +7,7 @@ interface Transaction {
   text: string;
   category: string;
   amount: number;
+  date: Date;
 }
 
 export const AddTransactionLite: React.FC = () => {
@@ -25,6 +26,7 @@ export const AddTransactionLite: React.FC = () => {
       text,
       category: categoryText,
       amount: +amount,
+      date: new Date(),
     };
 
     addTransaction(newTransaction);
