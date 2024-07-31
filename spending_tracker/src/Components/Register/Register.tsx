@@ -43,8 +43,6 @@ const Register: React.FC = () => {
     setter(e.target.value);
   };
 
-  console.log("registerComplete", registerComplete);
-
   return (
     <>
       {registerComplete && <Navigate to={"/home"} replace={true} />}

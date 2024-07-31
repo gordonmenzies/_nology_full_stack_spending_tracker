@@ -8,7 +8,6 @@ interface AuthContextProps {
   loading: boolean;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
   setUserLoggedIn: (thing: boolean) => void;
-  signOut: () => Promise<void>;
 }
 
 interface Transaction {
@@ -24,7 +23,6 @@ const AuthContext = createContext<AuthContextProps>({
   loading: true,
   setUserLoggedIn: (thing: boolean) => {},
   setCurrentUser: () => null,
-  signOut: async () => {},
 });
 
 export const useAuth = () => {
@@ -34,10 +32,6 @@ export const useAuth = () => {
 interface AuthProviderProps {
   children: ReactNode;
 }
-
-const signOut = async () => {
-  await auth.signOut();
-};
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -66,7 +60,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loading,
     setUserLoggedIn,
     setCurrentUser,
-    signOut,
   };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
