@@ -10,8 +10,9 @@ interface Transaction {
 }
 
 export const AddTransactionLite: React.FC = () => {
+  const { user } = useContext(GlobalContext);
   const [text, setText] = useState<string>("");
-  const [catgeoryText, setCategoryText] = useState<string>("");
+  const [categoryText, setCategoryText] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
 
   const { addTransaction } = useContext(GlobalContext);
@@ -22,19 +23,28 @@ export const AddTransactionLite: React.FC = () => {
     const newTransaction: Transaction = {
       id: Math.floor(Math.random() * 100000000),
       text,
-      category: catgeoryText,
+      category: categoryText,
       amount: +amount,
     };
 
     addTransaction(newTransaction);
   };
 
+  console.log(user.categoryList);
+
   return (
     <div className="container-lite">
       <form onSubmit={onSubmit}>
         <div className="form-control-lite">
           <input className="input-lite" type="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="Item" />
-          <input className="input-lite" type="category" value={catgeoryText} onChange={(e) => setCategoryText(e.target.value)} placeholder="Category" />
+          <select className="input-lite" id="category-select" onChange={(e) => setCategoryText(e.target.value)}>
+            <option value="default">Select a category</option>
+            {user.categoryList.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
           <label htmlFor="amount"></label>
           <input className="input-lite" type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} placeholder="Enter amount..." />
         </div>

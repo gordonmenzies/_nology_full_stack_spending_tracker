@@ -14,6 +14,12 @@ interface State {
 // Define action types
 type Action = { type: "DELETE_TRANSACTION"; payload: number } | { type: "ADD_TRANSACTION"; payload: Transaction } | { type: "READ_TRANSACTIONS"; payload: Transaction[] };
 
+// const updateCategoryList = (newCategory: string) => {
+//   let categories =
+//   categories.push(newTransaction.category);
+//   categories = [...new Set(categories)];
+//   return categories;
+// };
 // The reducer function
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {

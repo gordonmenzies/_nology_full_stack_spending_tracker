@@ -18,6 +18,7 @@ type User = {
   password: string;
   email: string;
   transactions: Transaction[];
+  categoryList: string[];
 };
 
 // Define the initial state structure
@@ -55,6 +56,7 @@ const emptyUser: User = {
   password: "",
   email: "",
   transactions: initialState.transactions,
+  categoryList: ["food", "entertainment", "utilties", "car", "house", "work", "subscription"],
 };
 
 // Create context
