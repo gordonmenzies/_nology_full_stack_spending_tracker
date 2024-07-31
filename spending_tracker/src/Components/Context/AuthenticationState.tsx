@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from "react";
 import { auth, db, doc, getDoc, setDoc } from "../../Config/config";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { User as FirebaseUser } from "firebase/auth";
 
 interface AuthContextProps {
   currentUser: User | null;
@@ -11,12 +10,28 @@ interface AuthContextProps {
   signOut: () => Promise<void>;
 }
 
+interface Transaction {
+  id: number;
+  text: string;
+  category: string;
+  amount: number;
+}
+
 interface UserProfile {
   uid: string;
   email: string;
-  displayName: string;
+  name: string;
   additionalInfo?: string;
 }
+
+// type UserType = {
+//   id: string;
+//   firstName: string;
+//   secondName: string;
+//   password: string;
+//   email: string;
+//   transactions: Transaction[];
+// };
 
 const AuthContext = createContext<AuthContextProps>({
   currentUser: null,

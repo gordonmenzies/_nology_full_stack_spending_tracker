@@ -5,7 +5,8 @@ import { doCreateUSerWithEmailAndPassword, createUserData, doSignInWithEmailAndP
 
 const Register: React.FC = () => {
   // State variables with types
-  const [name, setName] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [secondName, setSecondName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isRegistering, setIsRegistering] = useState(false);
@@ -24,7 +25,7 @@ const Register: React.FC = () => {
         setIsRegistering(true);
         const newUser = await doCreateUSerWithEmailAndPassword(email, password);
         const user = newUser.user;
-        await createUserData(email, password, user.uid);
+        await createUserData(email, password, user.uid, firstName, secondName);
         console.log(user);
       } catch (error) {
         // Handle the error as needed
@@ -55,9 +56,13 @@ const Register: React.FC = () => {
         <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={handleSubmit}>
           <div className="mb-1 flex flex-col gap-6">
             <Typography variant="h6" color="textPrimary" className="-mb-3">
-              Your Name
+              Your First Name
             </Typography>
-            <TextField size="medium" placeholder="Your Name" variant="outlined" fullWidth value={name} onChange={handleInputChange(setName)} />
+            <TextField size="medium" placeholder="first name" variant="outlined" fullWidth value={firstName} onChange={handleInputChange(setFirstName)} />
+            <Typography variant="h6" color="textPrimary" className="-mb-3">
+              Your Second Name
+            </Typography>
+            <TextField size="medium" placeholder="second name" variant="outlined" fullWidth value={secondName} onChange={handleInputChange(setSecondName)} />
             <Typography variant="h6" color="textPrimary" className="-mb-3">
               Your Email
             </Typography>

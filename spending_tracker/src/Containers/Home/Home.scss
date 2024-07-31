@@ -5,12 +5,16 @@
 }
 
 .buttons {
-  flex-direction: column;
+  flex-direction: row;
   display: flex;
   justify-items: center;
+
+  button {
+    width: auto;
+  }
 }
 
 button {
   width: 40%;
-  margin: auto;
+  margin-top: 10px;
 }

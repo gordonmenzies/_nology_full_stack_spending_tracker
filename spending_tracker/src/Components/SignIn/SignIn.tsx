@@ -25,6 +25,7 @@ const SignIn = () => {
         const userCredential = await doSignInWithEmailAndPassword(email, password);
         const user = userCredential.user;
         console.log(user);
+        console.log(userLoggedIn);
         setCurrentUser(user);
       } catch (error) {
         const errorCode = (error as any).code;

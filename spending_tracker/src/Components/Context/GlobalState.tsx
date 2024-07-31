@@ -14,7 +14,8 @@ interface Transaction {
 
 type User = {
   id: string;
-  name: string;
+  firstName: string;
+  secondName: string;
   password: string;
   email: string;
   transactions: Transaction[];
@@ -119,6 +120,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   const readDataFromFirebase = async (userId: string): Promise<Transaction[] | undefined> => {
     if (userId !== "") {
       const documentRef = doc(db, "users", userId);
+
       try {
         const docSnap = await getDoc(documentRef);
         if (docSnap.exists()) {
@@ -140,12 +142,14 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("occurrred");
+    console.log("occurred");
     const initializeData = async () => {
       const { currentUser } = getAuth();
       if (currentUser) {
+        console.log(currentUser);
         setUserId(currentUser.uid);
         const transactions = await readDataFromFirebase(currentUser.uid);
+        console.log("transactions read");
         if (transactions) {
           dispatch({
             type: "READ_TRANSACTIONS",

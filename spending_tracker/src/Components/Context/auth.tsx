@@ -3,10 +3,12 @@ import { doc, setDoc, getFirestore } from "firebase/firestore";
 
 import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, sendEmailVerification } from "firebase/auth";
 
-export const createUserData = async (email: string, password: string, userId: string) => {
+export const createUserData = async (email: string, password: string, userId: string, firstName: string, secondName: string) => {
   const db = getFirestore(app);
   try {
     const data = {
+      firstName: firstName,
+      secondName: secondName,
       email: email,
       password: password,
       userId: userId,

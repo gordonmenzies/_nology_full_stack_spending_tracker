@@ -68,7 +68,7 @@ const Home = () => {
   return (
     <div className="container">
       <Menu></Menu>
-      <p>hello nice to see you again {currentUser?.email}</p>
+      <p>hello nice to see you again {currentUser?.uid}</p>
       <AddTransactionLite></AddTransactionLite>
       <div>
         <IncomeBreakdown />
@@ -80,11 +80,10 @@ const Home = () => {
         <Link to={"/analytics"} replace={true}>
           <button>Analytics</button>
         </Link>
-        <button onClick={() => doSignOut()}>Sign Out</button>
+        <Link to={"/"} replace={true}>
+          <button onClick={() => doSignOut()}>Sign Out</button>
+        </Link>
       </div>
-      {/* <p>{budget}</p>
-      <SimpleTransactionBlock></SimpleTransactionBlock>
-      <Statistic></Statistic> */}
     </div>
   );
 };

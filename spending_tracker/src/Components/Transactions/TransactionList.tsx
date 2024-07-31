@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Transaction } from "./Transaction";
-import { useAuth } from "../Context/AuthenticationState";
 import { GlobalContext } from "../Context/GlobalState";
 
 // Define the structure of a transaction
