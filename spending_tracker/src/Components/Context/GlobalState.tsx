@@ -107,7 +107,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
       type: "ADD_TRANSACTION",
       payload: transaction,
     });
-    addDataToFirebase(transaction);
+    addTransactionToFirebase(transaction);
   }
 
   async function readTransaction() {
@@ -125,14 +125,30 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
       type: "UPDATE_CATEGORY",
       payload: category,
     });
+    addCategoryToFirebase(category);
   }
 
-  const addDataToFirebase = async (transaction: Transaction) => {
+  const addTransactionToFirebase = async (transaction: Transaction) => {
     if (userId !== "") {
+      console.log(userId);
       const documentRef = doc(db, "users", userId);
       try {
         await updateDoc(documentRef, { transactions: arrayUnion(transaction) });
         console.log("Transaction added to database");
+      } catch (error) {
+        console.log("Something went wrong - " + error);
+      }
+    } else {
+      console.log("No current user");
+    }
+  };
+
+  const addCategoryToFirebase = async (category: string) => {
+    if (userId !== "") {
+      const documentRef = doc(db, "users", userId);
+      try {
+        await updateDoc(documentRef, { categoryList: arrayUnion(category) });
+        console.log("category added to database");
       } catch (error) {
         console.log("Something went wrong - " + error);
       }

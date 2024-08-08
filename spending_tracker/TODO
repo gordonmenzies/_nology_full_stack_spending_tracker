@@ -1,10 +1,15 @@
-Spending Page - Functional X - Front End X - 
-Add Category X  (TURN INTO DROPDOWN) - Connect to Firebase
+Spending Page - Functional X - Front End X -
+Add Category X (TURN INTO DROPDOWN) - Connect to Firebase
 
-Setting Page - Functional - Front End - Create Category List 
+Setting Page - Functional - Front End - Create Category List
 
 Register Page - Functional X - Front End
 
 Analytics Page - Functional - Front End
 
 Home Page - Budget , Brief Overview Analytics
+
+////////
+Upload name when user is registered and pull it down when moving into home.
+upload new category.
+adjust button sizes.

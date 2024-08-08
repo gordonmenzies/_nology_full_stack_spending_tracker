@@ -25,7 +25,7 @@ export const AddTransactionLite: React.FC = () => {
     addTransaction(newTransaction);
   };
 
-  console.log(user.categoryList);
+  console.log(user);
 
   return (
     <div className="container-lite">

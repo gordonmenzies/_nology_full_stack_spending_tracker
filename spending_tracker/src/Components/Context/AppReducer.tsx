@@ -39,7 +39,7 @@ const reducer = (state: State, action: Action): State => {
       state.categoryList.push(action.payload);
       return {
         ...state,
-        categoryList: state.categoryList,
+        categoryList: [action.payload, ...state.categoryList],
       };
     default:
       return state;
