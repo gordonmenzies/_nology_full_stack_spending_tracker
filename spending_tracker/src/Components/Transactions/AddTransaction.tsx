@@ -1,13 +1,7 @@
 import "./transactions.scss";
 import React, { useState, useContext, FormEvent } from "react";
 import { GlobalContext } from "../Context/GlobalState";
-
-interface Transaction {
-  id: number;
-  text: string;
-  category: string;
-  amount: number;
-}
+import Transaction from "../../Types/Transaction";
 
 export const AddTransaction: React.FC = () => {
   const [text, setText] = useState<string>("");
@@ -24,6 +18,7 @@ export const AddTransaction: React.FC = () => {
       text,
       category: catgeoryText,
       amount: +amount,
+      date: new Date(),
     };
 
     addTransaction(newTransaction);

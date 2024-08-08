@@ -12,7 +12,7 @@ interface TransactionProps {
   };
 }
 
-export const Transaction: React.FC<TransactionProps> = ({ transaction }) => {
+export const TransactionComp: React.FC<TransactionProps> = ({ transaction }) => {
   const { deleteTransaction } = useContext(GlobalContext);
 
   const sign = transaction.amount < 0 ? "-" : "+";

@@ -1,7 +1,8 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { Card, Typography, Button, TextField } from "@mui/material";
-import { doCreateUSerWithEmailAndPassword, createUserData, doSignInWithEmailAndPassword } from "../Context/auth";
+import { doCreateUSerWithEmailAndPassword, doSignInWithEmailAndPassword } from "../Context/auth";
+import { GlobalContext } from "../Context/GlobalState";
 
 const Register: React.FC = () => {
   // State variables with types
@@ -11,6 +12,8 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [isRegistering, setIsRegistering] = useState(false);
   const [registerComplete, setRegisterComplete] = useState(false);
+
+  const { createNewUser } = useContext(GlobalContext);
 
   // Handle form submission
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -24,9 +27,17 @@ const Register: React.FC = () => {
       try {
         setIsRegistering(true);
         const newUser = await doCreateUSerWithEmailAndPassword(email, password);
-        const user = newUser.user;
-        await createUserData(email, password, user.uid, firstName, secondName);
-        console.log(user);
+        const user = {
+          id: newUser.user.uid,
+          firstName: firstName,
+          secondName: secondName,
+          password: password,
+          email: email,
+          transactions: [],
+          categoryList: ["food", "income", "entertainment", "utilties", "car", "house", "work", "subscription"],
+        };
+        createNewUser(user);
+        console.log("try executed");
       } catch (error) {
         // Handle the error as needed
       }

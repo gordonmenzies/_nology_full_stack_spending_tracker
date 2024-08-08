@@ -5,9 +5,10 @@ import { useContext, useState } from "react";
 import { doSignOut } from "../../Components/Context/auth";
 import { GlobalContext } from "../../Components/Context/GlobalState";
 import { Menu } from "../../Components/Menu/Menu";
+import { CategoryComp } from "./CategoryComp";
 
 const Settings = () => {
-  const { user, updateCategory } = useContext(GlobalContext);
+  const { user, updateCategory, categoryList } = useContext(GlobalContext);
   const [addCategory, setAddCategory] = useState("");
 
   return (
@@ -16,9 +17,14 @@ const Settings = () => {
       <p>hello nice to see you again {user.firstName}</p>
       <input className="input-lite" type="text" value={addCategory} onChange={(e) => setAddCategory(e.target.value)} placeholder="add Category" />
       <button onClick={() => updateCategory(addCategory)}>add Category</button>
-      <div>
-        <IncomeBreakdown />
-      </div>
+      <>
+        <h3>History</h3>
+        <ul className="list">
+          {categoryList.map((category, index) => (
+            <CategoryComp key={index} category={category} index={index} />
+          ))}
+        </ul>
+      </>
       <div className="buttons">
         <Link to={"/Settings"} replace={true}>
           <button>Settings</button>

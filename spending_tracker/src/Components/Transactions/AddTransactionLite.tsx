@@ -4,7 +4,7 @@ import { GlobalContext } from "../Context/GlobalState";
 import Transaction from "../../Types/Transaction";
 
 export const AddTransactionLite: React.FC = () => {
-  const { user } = useContext(GlobalContext);
+  const { user, categoryList } = useContext(GlobalContext);
   const [text, setText] = useState<string>("");
   const [categoryText, setCategoryText] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
@@ -25,8 +25,6 @@ export const AddTransactionLite: React.FC = () => {
     addTransaction(newTransaction);
   };
 
-  console.log(user);
-
   return (
     <div className="container-lite">
       <form onSubmit={onSubmit}>
@@ -34,7 +32,7 @@ export const AddTransactionLite: React.FC = () => {
           <input className="input-lite" type="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="Item" />
           <select className="input-lite" id="category-select" onChange={(e) => setCategoryText(e.target.value)}>
             <option value="default">Select a category</option>
-            {user.categoryList.map((category, index) => (
+            {categoryList.map((category, index) => (
               <option key={index} value={category}>
                 {category}
               </option>

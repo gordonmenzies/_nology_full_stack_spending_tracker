@@ -18,8 +18,6 @@ const SignIn = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Log the inputted values (you can also handle form submission here)
-    console.log("Email:", email);
-    console.log("Password:", password);
 
     if (!isSigningin) {
       try {

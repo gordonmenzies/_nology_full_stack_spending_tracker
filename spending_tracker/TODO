@@ -10,6 +10,6 @@ Analytics Page - Functional - Front End
 Home Page - Budget , Brief Overview Analytics
 
 ////////
-Upload name when user is registered and pull it down when moving into home.
-upload new category.
+upload new category - update local state at the same time
+
 adjust button sizes.

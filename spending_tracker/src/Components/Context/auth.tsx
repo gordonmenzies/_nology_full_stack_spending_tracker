@@ -16,6 +16,7 @@ export const createUserData = async (email: string, password: string, userId: st
       categoryList: ["food", "income", "entertainment", "utilties", "car", "house", "work", "subscription"],
     };
     await setDoc(doc(db, "users", userId), data);
+    console.log("document built in firebase");
   } catch (error) {
     console.log("something went wrong - " + error);
   }

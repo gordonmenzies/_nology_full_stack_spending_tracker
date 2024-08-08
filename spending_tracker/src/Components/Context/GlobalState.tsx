@@ -1,21 +1,18 @@
 import React, { createContext, useReducer, ReactNode, useState, useEffect } from "react";
+import { createUserData } from "../Context/auth";
 import { doc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
 import { db } from "../../Config/config";
 import AppReducer from "./AppReducer";
 import Transaction from "../../Types/Transaction";
+import User from "../../Types/User";
 
-type User = {
+// Define the initial state structure
+interface State {
   id: string;
   firstName: string;
   secondName: string;
   password: string;
   email: string;
-  transactions: Transaction[];
-  categoryList: string[];
-};
-
-// Define the initial state structure
-interface State {
   transactions: Transaction[];
   categoryList: string[];
 }
@@ -41,10 +38,20 @@ interface updateCategory {
   payload: string;
 }
 
-type Action = DeleteTransactionAction | AddTransactionAction | ReadTransactionAction | updateCategory;
+interface createNewUser {
+  type: "CREATE_USER";
+  payload: User;
+}
+
+type Action = DeleteTransactionAction | AddTransactionAction | ReadTransactionAction | updateCategory | createNewUser;
 
 // Initial state
 const initialState: State = {
+  id: "",
+  firstName: "",
+  secondName: "",
+  password: "",
+  email: "",
   transactions: [],
   categoryList: ["food", "income", "entertainment", "utilties", "car", "house", "work", "subscription"],
 };
@@ -61,6 +68,7 @@ const emptyUser: User = {
 
 // Create context
 interface GlobalContextProps extends State {
+  transactions: Transaction[];
   categoryList: string[];
   deleteTransaction: (id: number) => void;
   addTransaction: (transaction: Transaction) => void;
@@ -68,7 +76,13 @@ interface GlobalContextProps extends State {
   userId: string;
   setUserId: (id: string) => void;
   readTransaction: () => void;
+  createNewUser: (user: User) => void;
   user: User;
+  id: string;
+  firstName: string;
+  secondName: string;
+  password: string;
+  email: string;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
@@ -80,7 +94,13 @@ const GlobalContext = createContext<GlobalContextProps>({
   userId: "",
   setUserId: () => {},
   readTransaction: () => {},
+  createNewUser: () => {},
   user: emptyUser,
+  id: "",
+  firstName: "",
+  secondName: "",
+  password: "",
+  email: "",
 });
 
 // Provider component
@@ -120,12 +140,23 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     }
   }
 
-  function updateCategory(category: string) {
+  async function updateCategory(category: string) {
     dispatch({
       type: "UPDATE_CATEGORY",
       payload: category,
     });
     addCategoryToFirebase(category);
+  }
+
+  async function createNewUser(user: User) {
+    console.log("user", user);
+    dispatch({
+      type: "CREATE_USER",
+      payload: user,
+    });
+    await createUserData(user.email, user.password, user.id, user.firstName, user.secondName);
+    setUserId(user.id);
+    console.log(state, "state");
   }
 
   const addTransactionToFirebase = async (transaction: Transaction) => {
@@ -165,7 +196,6 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
         const docSnap = await getDoc(documentRef);
         if (docSnap.exists()) {
           const data = docSnap.data() as User;
-          console.log("Data read from Firebase:", data);
           setUser(data);
           return data;
         } else {
@@ -199,8 +229,6 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     };
 
     initializeData();
-    console.log(userId);
-    console.log(state.transactions);
   }, [userId]);
 
   return (
@@ -214,7 +242,13 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
         userId,
         setUserId,
         readTransaction,
+        createNewUser,
         user,
+        id: state.id,
+        firstName: state.firstName,
+        secondName: state.secondName,
+        password: state.password,
+        email: "",
       }}
     >
       {children}
