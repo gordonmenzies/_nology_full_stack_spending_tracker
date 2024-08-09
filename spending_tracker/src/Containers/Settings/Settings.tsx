@@ -1,5 +1,4 @@
 import "./Settings.scss";
-import IncomeBreakdown from "../../Components/Charts/IncomeBreakdown";
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { doSignOut } from "../../Components/Context/auth";
@@ -15,10 +14,12 @@ const Settings = () => {
     <div className="container">
       <Menu></Menu>
       <p>hello nice to see you again {user.firstName}</p>
-      <input className="input-lite" type="text" value={addCategory} onChange={(e) => setAddCategory(e.target.value)} placeholder="add Category" />
-      <button onClick={() => updateCategory(addCategory)}>add Category</button>
+      <div className="updateCategory">
+        <input className="input-lite" type="text" value={addCategory} onChange={(e) => setAddCategory(e.target.value)} placeholder="Category" />
+        <button onClick={() => updateCategory(addCategory)}>Add</button>
+      </div>
       <>
-        <h3>History</h3>
+        <h3>Categories</h3>
         <ul className="list">
           {categoryList.map((category, index) => (
             <CategoryComp key={index} category={category} index={index} />

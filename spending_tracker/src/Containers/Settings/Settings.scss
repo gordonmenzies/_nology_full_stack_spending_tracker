@@ -2,19 +2,57 @@
   background-color: black;
   width: 310px;
   border-radius: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
-.buttons {
-  flex-direction: row;
+.updateCategory {
+  flex-direction: column;
   display: flex;
-  justify-items: center;
+  align-items: center;
+
+  input {
+    width: 60%;
+    text-align: center;
+  }
 
   button {
-    width: auto;
+    margin-top: 10px;
+    height: 30px;
+    width: 200px;
+    font-size: 14px;
+    padding-top: 0.3em;
   }
+}
+
+h3 {
+  margin-top: 10px;
 }
 
 button {
   width: 40%;
   margin-top: 10px;
+}
+
+.category {
+  font-size: 10px;
+
+  p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 20px;
+  }
+
+  button {
+    border-radius: 2px;
+    padding: 0px;
+  }
+}
+
+ul {
+  margin-top: 0px;
+}
+
+input {
+  align-items: center;
 }

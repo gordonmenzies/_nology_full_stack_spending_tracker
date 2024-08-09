@@ -12,13 +12,13 @@ interface CategoryProps {
 // find out why new categories are added three times
 
 export const CategoryComp: React.FC<CategoryProps> = (category: CategoryProps) => {
-  const { updateCategory } = useContext(GlobalContext);
+  const { deleteCategory } = useContext(GlobalContext);
 
   return (
     <div className="category">
       <p>
         {category.category}{" "}
-        <button onClick={() => updateCategory("bleh")} className="remove-transaction">
+        <button onClick={() => deleteCategory(category.index)} className="remove-transaction">
           x
         </button>
       </p>

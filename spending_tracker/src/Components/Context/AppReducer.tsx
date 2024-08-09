@@ -14,7 +14,13 @@ interface State {
 }
 
 // Define action types
-type Action = { type: "DELETE_TRANSACTION"; payload: number } | { type: "ADD_TRANSACTION"; payload: Transaction } | { type: "READ_TRANSACTIONS"; payload: Transaction[] } | { type: "UPDATE_CATEGORY"; payload: string } | { type: "CREATE_USER"; payload: User };
+type Action =
+  | { type: "DELETE_TRANSACTION"; payload: number }
+  | { type: "ADD_TRANSACTION"; payload: Transaction }
+  | { type: "READ_TRANSACTIONS"; payload: Transaction[] }
+  | { type: "UPDATE_CATEGORY"; payload: string }
+  | { type: "CREATE_USER"; payload: User }
+  | { type: "DELETE_CATEGORY"; payload: number };
 
 // const updateCategoryList = (newCategory: string) => {
 //   let categories =
@@ -59,6 +65,14 @@ const reducer = (state: State, action: Action): State => {
       };
       console.log(userState);
       return userState;
+    case "DELETE_CATEGORY":
+      console.log("before", state.categoryList);
+      const newList = state.categoryList.slice(0, action.payload).concat(state.categoryList.slice(action.payload + 1));
+      console.log("after", newList);
+      return {
+        ...state,
+        categoryList: newList,
+      };
     default:
       return state;
   }

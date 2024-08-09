@@ -43,7 +43,12 @@ interface createNewUser {
   payload: User;
 }
 
-type Action = DeleteTransactionAction | AddTransactionAction | ReadTransactionAction | updateCategory | createNewUser;
+interface deleteCategory {
+  type: "DELETE_CATEGORY";
+  payload: number;
+}
+
+type Action = DeleteTransactionAction | AddTransactionAction | ReadTransactionAction | updateCategory | createNewUser | deleteCategory;
 
 // Initial state
 const initialState: State = {
@@ -73,6 +78,7 @@ interface GlobalContextProps extends State {
   deleteTransaction: (id: number) => void;
   addTransaction: (transaction: Transaction) => void;
   updateCategory: (category: string) => void;
+  deleteCategory: (index: number) => void;
   userId: string;
   setUserId: (id: string) => void;
   readTransaction: () => void;
@@ -91,6 +97,7 @@ const GlobalContext = createContext<GlobalContextProps>({
   deleteTransaction: () => {},
   addTransaction: () => {},
   updateCategory: () => {},
+  deleteCategory: () => {},
   userId: "",
   setUserId: () => {},
   readTransaction: () => {},
@@ -148,6 +155,14 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     addCategoryToFirebase(category);
   }
 
+  async function deleteCategory(index: number) {
+    dispatch({
+      type: "DELETE_CATEGORY",
+      payload: index,
+    });
+    removeCategoryFromFirebase(state.categoryList);
+  }
+
   async function createNewUser(user: User) {
     console.log("user", user);
     dispatch({
@@ -180,6 +195,21 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
       try {
         await updateDoc(documentRef, { categoryList: arrayUnion(category) });
         console.log("category added to database");
+      } catch (error) {
+        console.log("Something went wrong - " + error);
+      }
+    } else {
+      console.log("No current user");
+    }
+  };
+
+  const removeCategoryFromFirebase = async (categoryList: string[]) => {
+    if (userId !== "") {
+      const documentRef = doc(db, "users", userId);
+      try {
+        await updateDoc(documentRef, { categoryList: state.categoryList });
+        console.log("category added to database");
+        console.log(state.categoryList);
       } catch (error) {
         console.log("Something went wrong - " + error);
       }
@@ -239,6 +269,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
         deleteTransaction,
         addTransaction,
         updateCategory,
+        deleteCategory,
         userId,
         setUserId,
         readTransaction,

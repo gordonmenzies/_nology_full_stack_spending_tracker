@@ -5,13 +5,9 @@
 }
 
 .buttons {
-  flex-direction: row;
+  flex-direction: column;
   display: flex;
   justify-items: center;
-
-  button {
-    width: auto;
-  }
 }
 
 button {
